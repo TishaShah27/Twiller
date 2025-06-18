@@ -25,7 +25,7 @@ const Signup = () => {
     try {
       await signUp(email, password);
       const user = { username, name, email };
-      fetch("https://twiller-twitterclone-ku86.onrender.com/register", {
+      fetch("http://localhost:5000/register", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(user),

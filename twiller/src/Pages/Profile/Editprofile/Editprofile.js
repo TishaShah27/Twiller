@@ -82,8 +82,8 @@ const Editprofile = ({ user, loggedinuser }) => {
       website,
       dob,
     };
-    fetch(`https://twiller-twitterclone-ku86.onrender.com/userupdate/${user?.email}`, {
-      method: "PATCH",
+    fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
@@ -129,7 +129,7 @@ const Editprofile = ({ user, loggedinuser }) => {
               id="fullWidth"
               variant="filled"
               onChange={(e) => setname(e.target.value)}
-              deafultValue={loggedinuser[0]?.name ? loggedinuser[0].name : ""}
+              deafultValue={loggedinuser?.name ? loggedinuser.name : ""}
             />
             <TextField
               className="text-field"
@@ -138,7 +138,7 @@ const Editprofile = ({ user, loggedinuser }) => {
               id="fullWidth"
               variant="filled"
               onChange={(e) => setbio(e.target.value)}
-              deafultValue={loggedinuser[0]?.bio ? loggedinuser[0].bio : ""}
+              deafultValue={loggedinuser?.bio ? loggedinuser.bio : ""}
             />
             <TextField
               className="text-field"
@@ -148,7 +148,7 @@ const Editprofile = ({ user, loggedinuser }) => {
               variant="filled"
               onChange={(e) => setlocation(e.target.value)}
               deafultValue={
-                loggedinuser[0]?.location ? loggedinuser[0].location : ""
+                loggedinuser?.location ? loggedinuser.location : ""
               }
             />
             <TextField
@@ -159,7 +159,7 @@ const Editprofile = ({ user, loggedinuser }) => {
               variant="filled"
               onChange={(e) => setwebsite(e.target.value)}
               deafultValue={
-                loggedinuser[0]?.website ? loggedinuser[0].website : ""
+                loggedinuser?.website ? loggedinuser.website : ""
               }
             />
           </form>
@@ -169,8 +169,8 @@ const Editprofile = ({ user, loggedinuser }) => {
             <Editchild dob={dob} setdob={setdob} />
           </div>
           <div className="last-section">
-            {loggedinuser[0]?.dob ? (
-              <h2>{loggedinuser[0]?.dob}</h2>
+            {loggedinuser?.dob ? (
+              <h2>{loggedinuser?.dob}</h2>
             ) : (
               <h2>{dob ? dob : t("Add Your DOB")}</h2>
             )}

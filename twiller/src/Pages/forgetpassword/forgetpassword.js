@@ -3,30 +3,33 @@ import axios from "axios";
 import "./forgetpassword.css";
 import TopBar from "./topbar";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const handleBackToLogin = () => {
+    navigate("/login"); // Replace with your actual login route
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
 
-    if (password !== confirmPassword) {
-      setError(t("forgotPassword.errorPasswordMismatch"));
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   setError(t("forgotPassword.errorPasswordMismatch"));
+    //   return;
+    // }
 
     try {
-      const res = await axios.post("https://twiller-twitterclone-ku86.onrender.com/forgot-password", {
+      const res = await axios.post("http://localhost:5000/forgot-password", {
         emailOrPhone: input,
-        password: password,
+        // password: password,
       });
       setMessage(res.data.message);
     } catch (err) {
@@ -56,7 +59,7 @@ const ForgotPassword = () => {
             onChange={(e) => setInput(e.target.value)}
             required
           />
-          <input
+          {/* <input
             type="password"
             placeholder={t("forgotPassword.passwordPlaceholder")}
             value={password}
@@ -69,8 +72,15 @@ const ForgotPassword = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-          />
+          /> */}
           <button type="submit">{t("forgotPassword.resetButton")}</button>
+          <button type="button" onClick={handleBackToLogin}
+            style={{
+            backgroundColor: "white",
+            color: "black"
+            }}>
+            {t("Back to Login")}
+            </button>
         </form>
 
         {message && <p className="message">{message}</p>}

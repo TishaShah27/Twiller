@@ -8,117 +8,109 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import Editprofile from "../Editprofile/Editprofile";
-import axios from "axios";
 import useLoggedinuser from "../../../hooks/useLoggedinuser";
-import AvatarCustomization from "../Avatar/avatar"; // Adjust path as needed
+import AvatarCustomization from "../Avatar/avatar";
 import Switch from "@mui/material/Switch";
 import { useTranslation } from "react-i18next";
+import Skeleton from "@mui/material/Skeleton";
 
 const Mainprofile = ({ user }) => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isloading, setisloading] = useState(false);
-  const [loggedinuser] = useLoggedinuser();
+  const [isUploadingCover, setUploadingCover] = useState(false);
+  const [isUploadingProfile, setUploadingProfile] = useState(false);
+  const [loggedinuser, setLoggedinuser] = useLoggedinuser();
   const username = user?.email?.split("@")[0];
-  const [post, setpost] = useState([]);
+  const [post] = useState([]);
+  const { t } = useTranslation();
   const [useAvatar, setUseAvatar] = useState(false);
   const [avatarSvg, setAvatarSvg] = useState(null);
   const [avatarModalOpen, setAvatarModalOpen] = useState(false);
+  const [coverLoaded, setCoverLoaded] = useState(false);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+
   const handleOpenAvatarModal = () => setAvatarModalOpen(true);
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`hhttps://twiller-twitterclone-ku86.onrender.com/userpost?email=${user.email}`)
+      fetch(`http://localhost:5000/loggedinuser?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => {
-          setpost(data);
-        });
+          if (Array.isArray(data) && data.length > 0) {
+            setLoggedinuser(data[0]); // ✅ Always set as object
+            console.log("Fetched loggedinuser:", data[0]);
+          } else {
+            console.warn("No user data found");
+          }
+        })
+        .catch((err) => console.error("Error loading loggedinuser:", err));
     }
-  }, [user?.email]);
+  }, [user?.email, setLoggedinuser]);
 
-  // avatar
   useEffect(() => {
-    if (loggedinuser[0]) {
-      const u = loggedinuser[0];
-      if (u.avatar) setAvatarSvg(u.avatar);
-      if (u.useAvatar !== undefined) setUseAvatar(u.useAvatar);
+    if (loggedinuser) {
+      if (loggedinuser.avatar) setAvatarSvg(loggedinuser.avatar);
+      if (loggedinuser.useAvatar !== undefined)
+        setUseAvatar(loggedinuser.useAvatar);
     }
   }, [loggedinuser]);
 
-  const handleuploadcoverimage = (e) => {
-    setisloading(true);
-    const image = e.target.files[0];
+  const uploadImage = async (file) => {
     const formData = new FormData();
-    formData.set("image", image);
-    axios
-      .post(
-        "https://api.imgbb.com/1/upload?key=b0ea2f6cc0f276633b2a8a86d2c43335",
-        formData
-      )
-      .then((res) => {
-        const url = res.data.data.display_url;
-        const usercoverimage = {
-          email: user?.email,
-          coverimage: url,
-        };
-        setisloading(false);
-        if (url) {
-          fetch(`https://twiller-twitterclone-ku86.onrender.com/userupdate/${user?.email}`, {
-            method: "PATCH",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(usercoverimage),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log("done", data);
-            });
+    formData.set("image", file);
+    const res = await fetch(
+      "https://api.imgbb.com/1/upload?key=8eab5e80436a5a03116ffe0368a553c7",
+      { method: "POST", body: formData }
+    );
+    const data = await res.json();
+    return data?.data?.display_url;
+  };
+
+  const refreshLoggedInUser = () => {
+    fetch(`http://localhost:5000/loggedinuser?email=${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setLoggedinuser(data[0]); // ✅ still set as object
         }
-      })
-      .catch((e) => {
-        console.log(e);
-        window.alert(e);
-        setisloading(false);
       });
   };
 
-  const handleuploadprofileimage = (e) => {
-    setisloading(true);
-    const image = e.target.files[0];
-    const formData = new FormData();
-    formData.set("image", image);
-    axios
-      .post(
-        "https://api.imgbb.com/1/upload?key=b0ea2f6cc0f276633b2a8a86d2c43335",
-        formData
-      )
-      .then((res) => {
-        const url = res.data.data.display_url;
-        const userprofileimage = {
-          email: user?.email,
-          profileImage: url,
-        };
-        setisloading(false);
-        if (url) {
-          fetch(`https://twiller-twitterclone-ku86.onrender.com/userupdate/${user?.email}`, {
-            method: "PATCH",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(userprofileimage),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log("done", data);
-            });
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        window.alert(e);
-        setisloading(false);
-      });
+  const handleuploadcoverimage = async (e) => {
+    setUploadingCover(true);
+    const file = e.target.files[0];
+    try {
+      const url = await uploadImage(file);
+      if (url) {
+        await fetch(`http://localhost:5000/userupdate?email=${user?.email}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user?.email, coverimage: url }),
+        });
+        refreshLoggedInUser();
+      }
+    } catch (err) {
+      console.error("Cover upload error:", err);
+    }
+    setUploadingCover(false);
+  };
+
+  const handleuploadprofileimage = async (e) => {
+    setUploadingProfile(true);
+    const file = e.target.files[0];
+    try {
+      const url = await uploadImage(file);
+      if (url) {
+        await fetch(`http://localhost:5000/userupdate?email=${user?.email}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user?.email, profileImage: url }),
+        });
+        refreshLoggedInUser();
+      }
+    } catch (err) {
+      console.error("Profile upload error:", err);
+    }
+    setUploadingProfile(false);
   };
 
   return (
@@ -127,23 +119,67 @@ const Mainprofile = ({ user }) => {
       <h4 className="heading-4">{username}</h4>
       <div className="mainprofile">
         <div className="profile-bio">
-          {
-            <div>
-              <div className="coverImageContainer">
+          <div>
+            <div className="coverImageContainer">
+              {!coverLoaded && (
+                <Skeleton variant="rectangular" width="100%" height={200} />
+              )}
+              {loggedinuser && (
                 <img
                   src={
-                    loggedinuser[0]?.coverimage
-                      ? loggedinuser[0].coverimage
-                      : user && user.photoURL
+                    loggedinuser.coverimage
+                      ? `${loggedinuser.coverimage}?t=${Date.now()}`
+                      : user?.photoURL
                   }
-                  alt=""
+                  alt="Cover"
                   className="coverImage"
+                  style={{ display: coverLoaded ? "block" : "none" }}
+                  onLoad={() => setCoverLoaded(true)}
                 />
+              )}
+              <div className="hoverCoverImage">
+                <div className="imageIcon_tweetButton">
+                  <label htmlFor="image" className="imageIcon">
+                    {isUploadingCover ? (
+                      <LockResetIcon className="photoIcon photoIconDisabled" />
+                    ) : (
+                      <CenterFocusWeakIcon className="photoIcon" />
+                    )}
+                  </label>
+                  <input
+                    type="file"
+                    id="image"
+                    className="imageInput"
+                    onChange={handleuploadcoverimage}
+                  />
+                </div>
+              </div>
+            </div>
 
-                <div className="hoverCoverImage">
+            <div className="avatar-img">
+              <div className="avatarContainer">
+                {!profileLoaded && (
+                  <Skeleton variant="circular" width={100} height={100} />
+                )}
+                {loggedinuser && (
+                  <img
+                    src={
+                      useAvatar && avatarSvg
+                        ? avatarSvg
+                        : loggedinuser.profileImage
+                        ? `${loggedinuser.profileImage}?t=${Date.now()}`
+                        : user?.photoURL
+                    }
+                    alt=""
+                    className="avatar"
+                    style={{ display: profileLoaded ? "block" : "none" }}
+                    onLoad={() => setProfileLoaded(true)}
+                  />
+                )}
+                <div className="hoverAvatarImage">
                   <div className="imageIcon_tweetButton">
-                    <label htmlFor="image" className="imageIcon">
-                      {isloading ? (
+                    <label htmlFor="profileImage" className="imageIcon">
+                      {isUploadingProfile ? (
                         <LockResetIcon className="photoIcon photoIconDisabled" />
                       ) : (
                         <CenterFocusWeakIcon className="photoIcon" />
@@ -151,145 +187,97 @@ const Mainprofile = ({ user }) => {
                     </label>
                     <input
                       type="file"
-                      id="image"
+                      id="profileImage"
                       className="imageInput"
-                      onChange={handleuploadcoverimage}
+                      onChange={handleuploadprofileimage}
                     />
                   </div>
                 </div>
               </div>
 
-              {/* avatar */}
-              <div className="avatar-img">
-                <div className="avatarContainer">
-                  <img
-                    src={
-                      useAvatar && avatarSvg
-                        ? avatarSvg
-                        : loggedinuser[0]?.profileImage
-                        ? loggedinuser[0].profileImage
-                        : user?.photoURL
-                    }
-                    alt=""
-                    className="avatar"
-                  />
-                  <div className="hoverAvatarImage">
-                    <div className="imageIcon_tweetButton">
-                      <label htmlFor="profileImage" className="imageIcon">
-                        {isloading ? (
-                          <LockResetIcon className="photoIcon photoIconDisabled" />
-                        ) : (
-                          <CenterFocusWeakIcon className="photoIcon" />
-                        )}
-                      </label>
-                      <input
-                        type="file"
-                        id="profileImage"
-                        className="imageInput"
-                        onChange={handleuploadprofileimage}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <Switch
-                  checked={useAvatar}
-                  onChange={() => {
-                    const updatedValue = !useAvatar;
-                    setUseAvatar(updatedValue);
+              <Switch
+                checked={useAvatar}
+                onChange={() => {
+                  const updatedValue = !useAvatar;
+                  setUseAvatar(updatedValue);
+                  if (!loggedinuser?.email) {
+                    console.error("No email found. Cannot save avatar.");
+                    return;
+                  }
+                  fetch("http://localhost:5000/save-avatar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      email: loggedinuser.email,
+                      avatar: avatarSvg,
+                      useAvatar: updatedValue,
+                    }),
+                  })
+                    .then((res) => res.json())
+                    .then(() => refreshLoggedInUser())
+                    .catch((err) =>
+                      console.error("Error saving avatar:", err)
+                    );
+                }}
+                color="primary"
+              />
+              <span className="toggle-label">Use Avatar</span>
 
-                    axios
-                      .post("https://twiller-twitterclone-ku86.onrender.com/save-avatar", {
-                        email: loggedinuser[0]?.email,
-                        avatar: avatarSvg,
-                        useAvatar: updatedValue,
-                      })
-                      .then(() => {
-                        console.log("Avatar saved successfully");
-
-                        // Refetch updated user
-                        return axios.get(
-                          `https://twiller-twitterclone-ku86.onrender.com/loggedinuser?email=${loggedinuser[0]?.email}`
-                        );
-                      })
-                      .then((response) => {
-                        loggedinuser([response.data]); // assuming you're using useState
-                      })
-                      .catch((err) => {
-                        console.error("Error saving avatar:", err);
-                      });
+              {avatarModalOpen && user?.email && (
+                <AvatarCustomization
+                  onSave={(svg) => {
+                    const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(
+                      svg
+                    )}`;
+                    setAvatarSvg(dataUri);
+                    setAvatarModalOpen(false);
+                    setUseAvatar(true);
                   }}
-                  color="primary"
+                  onClose={() => setAvatarModalOpen(false)}
+                  userEmail={loggedinuser.email}
                 />
+              )}
 
-                <span className="toggle-label">Use Avatar</span>
-                {avatarModalOpen && (
-                  <AvatarCustomization
-                    onSave={(svg) => {
-                      const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-                      setAvatarSvg(dataUri);
-                      setAvatarModalOpen(false);
-                      setUseAvatar(true);
-                    }}
-                    onClose={() => setAvatarModalOpen(false)}
-                    userEmail={loggedinuser[0]?.email}
-                  />
-                )}
-
-                <div className="userInfo">
-                  <div>
-                    <h3 className="heading-3">
-                      {loggedinuser[0]?.name
-                        ? loggedinuser[0].name
-                        : user && user.displayname}
-                    </h3>
-                    <p className="usernameSection">@{username}</p>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                    }}
-                  >
-                    <Editprofile user={user} loggedinuser={loggedinuser} />
-                    <button
-                      className="create-avatar-btn"
-                      onClick={handleOpenAvatarModal}
-                    >
-                      {t("Create Avatar")}
-                    </button>
-                  </div>
+              <div className="userInfo">
+                <div>
+                  <h3 className="heading-3">
+                    {loggedinuser?.name ?? user?.displayName}
+                  </h3>
+                  <p className="usernameSection">@{username}</p>
                 </div>
-
-                <div className="infoContainer">
-                  {loggedinuser[0]?.bio ? <p>{loggedinuser[0].bio}</p> : ""}
-                  <div className="locationAndLink">
-                    {loggedinuser[0]?.location ? (
-                      <p className="suvInfo">
-                        <MyLocationIcon /> {t("Location")}:{" "}
-                        {loggedinuser[0].location}
-                      </p>
-                    ) : (
-                      ""
-                    )}
-                    {loggedinuser[0]?.website ? (
-                      <p className="subInfo link">
-                        <AddLinkIcon /> {t("Website")}:{" "}
-                        {loggedinuser[0].website}
-                      </p>
-                    ) : (
-                      ""
-                    )}
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <Editprofile user={user} loggedinuser={loggedinuser} />
+                  <button className="create-avatar-btn" onClick={handleOpenAvatarModal}>
+                    {t("Create Avatar")}
+                  </button>
                 </div>
-                <h4 className="tweetsText">{t("Tweets")}</h4>
-                <hr />
               </div>
-              {post.map((p) => (
-                <Post key={p._id || p.id} p={p} />
-              ))}
+
+              <div className="infoContainer">
+                {loggedinuser?.bio && <p>{loggedinuser.bio}</p>}
+                <div className="locationAndLink">
+                  {loggedinuser?.location && (
+                    <p className="suvInfo">
+                      <MyLocationIcon /> {t("Location")}: {loggedinuser.location}
+                    </p>
+                  )}
+                  {loggedinuser?.website && (
+                    <p className="subInfo link">
+                      <AddLinkIcon />
+                      {t("Website")}: {loggedinuser.website}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <h4 className="tweetsText">{t("Tweets")}</h4>
+              <hr />
             </div>
-          }
+
+            {post.map((p) => (
+              <Post key={p._id || p.id} p={p} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

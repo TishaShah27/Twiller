@@ -28,7 +28,7 @@ const Tweetbox = () => {
     formData.set("image", image);
     axios
       .post(
-        "https://api.imgbb.com/1/upload?key=b0ea2f6cc0f276633b2a8a86d2c43335",
+        "https://api.imgbb.com/1/upload?key=8eab5e80436a5a03116ffe0368a553c7",
         formData
       )
       .then((res) => {
@@ -43,7 +43,7 @@ const Tweetbox = () => {
   const handletweet = (e) => {
     e.preventDefault();
     if (user?.providerData[0]?.providerId === "password") {
-      fetch(`https://twiller-twitterclone-ku86.onrender.com/loggedinuser?email=${email}`)
+      fetch(`http://localhost:5000/loggedinuser?email=${email}`)
         .then((res) => res.json())
         .then((data) => {
           setname(data[0]?.name);
@@ -65,7 +65,7 @@ const Tweetbox = () => {
       };
       setpost("");
       setimageurl("");
-      fetch("https://twiller-twitterclone-ku86.onrender.com/post", {
+      fetch("http://localhost:5000/post", {
         method: "POST",
         headers: {
           "content-type": "application/json",

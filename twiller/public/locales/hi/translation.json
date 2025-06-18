@@ -5,7 +5,15 @@
   "forgot_password": "पासवर्ड भूल गए?",
   "Log in": "लॉग इन करें",
   "no_account": "कोई खाता नहीं है?",
-  "Sign up": "साइन अप करें",
+  "Home": "होम",
+  "Explore": "अन्वेषण करें",
+  "Notifications": "सूचनाएं",
+  "Messages": "संदेश",
+  "Bookmarks": "बुकमार्क",
+  "Lists": "सूचियाँ",
+  "Profile": "प्रोफ़ाइल",
+  "More": "अधिक",
+  "Sign up": "साइन अप",
   "bookmark": {
     "title": "बुकमार्क पेज में आपका स्वागत है"
   },

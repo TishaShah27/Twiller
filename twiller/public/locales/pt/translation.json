@@ -3,7 +3,14 @@
   "email_placeholder": "Endereço de e-mail",
   "password_placeholder": "Senha",
   "forgot_password": "Esqueceu a senha?",
-  
+  "Home": "Início",
+  "Explore": "Explorar",
+  "Notifications": "Notificações",
+  "Messages": "Mensagens",
+  "Bookmarks": "Marcadores",
+  "Lists": "Listas",
+  "Profile": "Perfil",
+  "More": "Mais",
   "no_account": "Não tem uma conta?",
   "Sign up": "Inscreva-se",
   "bookmark": {

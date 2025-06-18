@@ -85,13 +85,13 @@ const Sidebar = ({ handlelogout, user }) => {
           <div className="Profile__info">
             <Avatar
               src={
-                loggedinuser[0]?.profileImage
-                  ? loggedinuser[0].profileImage
+                loggedinuser?.profileImage
+                  ? loggedinuser.profileImage
                   : user?.photoURL
               }
             />
             <div className="user__info">
-              <h4>{loggedinuser[0]?.name || user?.displayName}</h4>
+              <h4>{loggedinuser?.name || user?.displayName}</h4>
               <h5>@{result}</h5>
             </div>
             <IconButton size="small" onClick={handleClick}>

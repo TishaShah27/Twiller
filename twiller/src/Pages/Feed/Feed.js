@@ -9,12 +9,12 @@ const Feed = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetch("https://twiller-twitterclone-ku86.onrender.com")
+    fetch("http://localhost:5000/post")
       .then((res) => res.json())
       .then((data) => {
         setpost(data);
       });
-  }, [post]);
+  }, []);
 
   return (
     <div className="feed">

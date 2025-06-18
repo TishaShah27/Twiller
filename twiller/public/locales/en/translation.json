@@ -1,4 +1,5 @@
 {
+
   "happening_now": "Happening now",
   "email_placeholder": "Email address",
   "password_placeholder": "Password",
@@ -6,6 +7,18 @@
   "log_in": "Log In",
   "no_account": "Don't have an account?",
   "sign_up": "Sign Up",
+
+  "Home": "Home",
+  "Explore": "Explore",
+  "Notifications": "Notifications",
+  "Messages": "Messages",
+  "Bookmarks": "Bookmarks",
+  "Lists": "Lists",
+  "Profile": "Profile",
+  "More": "More",
+  "Tweets": "Tweets",
+
+
   "bookmark": {
     "title": "Welcome to Bookmark page"
   },

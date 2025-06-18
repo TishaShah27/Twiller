@@ -75,6 +75,15 @@
   "Add Your DOB": "添加您的出生日期",
   "Switch to Professional": "切换为专业帐户",
   "Don't have an account?": "没有账户？",
+  "Home": "主页",
+  "Explore": "探索",
+  "Notifications": "通知",
+  "Messages": "消息",
+  "Bookmarks": "书签",
+  "Lists": "列表",
+  "Profile": "个人资料",
+  "More": "更多",
+  "Sign up": "注册",
 
   "mainprofile": {
     "location": "位置",

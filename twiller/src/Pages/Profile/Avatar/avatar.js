@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { createAvatar } from '@dicebear/core';
 import * as avataaars from '@dicebear/avataaars';
 import axios from 'axios';
@@ -9,15 +9,26 @@ import { useTranslation } from "react-i18next";
 const AvatarModal = ({ onSave,onClose, userEmail }) => {
   const [avatarSvg, setAvatarSvg] = useState('');
   const { t } = useTranslation();
+  useEffect(() => {
+    console.log("userEmail in AvatarModal:", userEmail);
+    if (!userEmail) {
+      console.error("AvatarModal: userEmail is missing");
+    }
+  }, [userEmail]);
   const backgroundColors = [
   '#B0E0E6', '#E6E6FA', '#FFE4E1', '#FFDAB9', '#F0FFF0',
   '#AFEEEE', '#FFFACD', '#FADADD', '#F5FFFA', '#F0F8FF',
   '#D8BFD8', '#E0FFFF', '#FFF5EE', '#FFDAB9', '#DCDCDC'
 ];
 
+useEffect(() => {
+  console.log("AvatarModal received userEmail:", userEmail);
+}, [userEmail]);
+
   const generateAvatar = () => {
   const seed = Math.random().toString(36).substring(2);
   const randomBgColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+  
 
   const avatar = createAvatar(avataaars, {
     seed,
@@ -43,11 +54,13 @@ const avatarWithBg = avatar.slice(0, insertIndex) + backgroundCircle + avatar.sl
     try {
       const blob = new Blob([avatarSvg], { type: 'image/svg+xml' });
       const reader = new FileReader();
+      
 
       reader.onloadend = async () => {
         const base64Avatar = reader.result;
+        console.log("Sending avatar with email:", userEmail);
         try {
-          const response = await axios.post('https://twiller-twitterclone-ku86.onrender.com/save-avatar', {
+          const response = await axios.post('http://localhost:5000/save-avatar', {
             email: userEmail,
             avatar: base64Avatar,
             useAvatar: true,

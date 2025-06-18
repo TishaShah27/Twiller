@@ -91,10 +91,9 @@ module.exports = router;
 
 
     app.get("/loggedinuser", async (req, res) => {
-    const email = req.query.email;
-    const user = await usercollection.findOne({ email: email });
-    if (!user) return res.status(404).send({ error: "User not found" });
-    res.send({ email: user.email, phone: user.phone || null, /* other fields as needed */ });
+      const email = req.query.email;
+      const user = await usercollection.find({ email: email }).toArray();
+      res.send(user);
     });
 
     app.post("/post", async (req, res) => {
@@ -116,6 +115,11 @@ module.exports = router;
       res.send(post);
     });
 
+    // app.get("/user", async (req, res) => {
+    //   const user = await db.collection("users").findOne({ email: req.query.email });
+    //   res.send(user);
+
+    // });
     app.get("/user", async (req, res) => {
       const user = await usercollection.find().toArray();
       res.send(user);
@@ -126,9 +130,12 @@ module.exports = router;
       const profile = req.body;
       const options = { upsert: true };
       const updateDoc = { $set: profile };
+      console.log(profile);
       const result = await usercollection.updateOne(filter, updateDoc, options);
       res.send(result);
     });
+
+
 
 
   app.post("/update-phone", async (req, res) => {
@@ -265,10 +272,14 @@ const transporter = nodemailer.createTransport({
 
     // save avatar 
     app.post('/save-avatar', async (req, res) => {
-  const { email, avatar,useAvatar } = req.body;
+  const { email, avatar, useAvatar } = req.body;
 
-  if (!email || !avatar) {
-    return res.status(400).json({ error: 'Email and avatar are required' });
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  if (typeof avatar === 'undefined') {
+    return res.status(400).json({ error: 'Avatar is required' });
   }
 
   try {
@@ -277,8 +288,8 @@ const transporter = nodemailer.createTransport({
       .collection('users')
       .updateOne(
         { email },
-        { $set: {avatar, useAvatar } },
-        { upsert: true },
+        { $set: { avatar, useAvatar } },
+        { upsert: true }
       );
 
     res.status(200).json({ message: 'Avatar saved successfully', result });
@@ -289,6 +300,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
+
     // Start server only after MongoDB connection is successful
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
@@ -297,14 +309,12 @@ const transporter = nodemailer.createTransport({
   } catch (error) {
     console.error("MongoDB connection error:", error);
   }
-  
+  app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
 
 app.get('/', (req, res) => {
   res.json({ message: "Twiller is working" });
-});
-
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
 });
 
 }
