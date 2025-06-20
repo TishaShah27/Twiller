@@ -29,17 +29,20 @@
     "button": "Tweetar"
   },
   "forgotPassword": {
-    "resetPasswordTitle": "Redefinir senha da conta",
-    "enterNewPasswordSubtext": "Digite uma nova senha para sua conta",
-    "emailPlaceholder": "Digite seu e-mail",
-    "passwordPlaceholder": "Senha",
-    "confirmPasswordPlaceholder": "Confirmar senha",
-    "resetButton": "Redefinir senha",
-    "errorPasswordMismatch": "A senha não corresponde à confirmação",
-    "serverError": "Erro no servidor",
-    "noServerResponse": "Sem resposta do servidor. O backend está em execução?",
-    "requestSetupError": "Erro na configuração da solicitação: "
-  },
+  "resetPasswordTitle": "Redefinir senha da conta",
+  "enterNewPasswordSubtext": "Digite uma nova senha para sua conta",
+  "emailPlaceholder": "Digite seu e-mail",
+  "passwordPlaceholder": "Senha",
+  "confirmPasswordPlaceholder": "Confirmar senha",
+  "resetButton": "Redefinir senha",
+  "errorPasswordMismatch": "A senha não corresponde à confirmação",
+  "serverError": "Erro no servidor",
+  "noServerResponse": "Sem resposta do servidor. O backend está funcionando?",
+  "requestSetupError": "Erro ao configurar a solicitação: ",
+  "resetSuccess": "Senha redefinida com sucesso",
+  "copyAndSaveInstruction": "Por favor, copie e salve esta senha com segurança.",
+  "yourNewPassword": "Sua nova senha:"
+},
   "topBar": {
     "passwordResetTitle": "Redefinir senha"
   },
@@ -88,7 +91,9 @@
   "mainprofile": {
     "location": "Localização",
     "website": "Site",
-    "tweets": "Tweets"
+    "tweets": "Tweets",
+    "tweet": "Tweetar",
+    "useAvatar": "Usar avatar"
   },
   "sidebar": {
     "home": "Início",
