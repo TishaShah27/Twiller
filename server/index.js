@@ -13,6 +13,7 @@ app.use(express.json());
 const client = new MongoClient(uri);
 const fetch = require("node-fetch"); // or use axios
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 function generateRandomPassword(length = 10) {
   const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
