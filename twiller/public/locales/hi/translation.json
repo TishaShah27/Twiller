@@ -30,17 +30,20 @@
     "button": "ट्वीट करें"
   },
   "forgotPassword": {
-    "resetPasswordTitle": "खाता पासवर्ड रीसेट करें",
-    "enterNewPasswordSubtext": "अपने खाते के लिए नया पासवर्ड दर्ज करें",
-    "emailPlaceholder": "अपना ईमेल दर्ज करें",
-    "passwordPlaceholder": "पासवर्ड",
-    "confirmPasswordPlaceholder": "पासवर्ड की पुष्टि करें",
-    "resetButton": "पासवर्ड रीसेट करें",
-    "errorPasswordMismatch": "पासवर्ड पुष्टि पासवर्ड से मेल नहीं खाते",
-    "serverError": "सर्वर त्रुटि",
-    "noServerResponse": "सर्वर से कोई उत्तर नहीं। क्या बैकएंड चल रहा है?",
-    "requestSetupError": "अनुरोध सेटअप त्रुटि: "
-  },
+  "resetPasswordTitle": "खाता पासवर्ड रीसेट करें",
+  "enterNewPasswordSubtext": "अपने खाते के लिए नया पासवर्ड दर्ज करें",
+  "emailPlaceholder": "अपना ईमेल दर्ज करें",
+  "passwordPlaceholder": "पासवर्ड",
+  "confirmPasswordPlaceholder": "पासवर्ड की पुष्टि करें",
+  "resetButton": "पासवर्ड रीसेट करें",
+  "errorPasswordMismatch": "पासवर्ड पुष्टि पासवर्ड से मेल नहीं खाता",
+  "serverError": "सर्वर त्रुटि",
+  "noServerResponse": "सर्वर से कोई प्रतिक्रिया नहीं। क्या बैकएंड चल रहा है?",
+  "requestSetupError": "अनुरोध सेटअप त्रुटि: ",
+  "resetSuccess": "पासवर्ड सफलतापूर्वक रीसेट किया गया",
+  "copyAndSaveInstruction": "कृपया इस पासवर्ड को कॉपी करें और सुरक्षित रखें।",
+  "yourNewPassword": "आपका नया पासवर्ड:"
+},
   "topBar": {
     "passwordResetTitle": "पासवर्ड रीसेट"
   },
@@ -56,7 +59,8 @@
     "passwordPlaceholder": "पासवर्ड",
     "signUpButton": "साइन अप करें",
     "alreadyAccount": "पहले से खाता है?",
-    "loginLink": "लॉग इन करें"
+    "loginLink": "लॉग इन करें",
+     "phonePlaceholder": "अपना फोन नंबर दर्ज करें"
   },
   "message": {
     "welcomeTitle": "संदेश पेज में आपका स्वागत है"
@@ -88,7 +92,9 @@
   "mainprofile": {
     "location": "स्थान",
     "website": "वेबसाइट",
-    "tweets": "ट्वीट्स"
+    "tweets": "ट्वीट्स",
+     "tweet": "ट्वीट करें",
+    "useAvatar": "अवतार उपयोग करें"
   },
   "sidebar": {
     "home": "होम",
