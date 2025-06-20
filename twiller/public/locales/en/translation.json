@@ -35,17 +35,20 @@
     "button": "Tweet"
   },
   "forgotPassword": {
-    "resetPasswordTitle": "Reset account password",
-    "enterNewPasswordSubtext": "Enter a new password for your account",
-    "emailPlaceholder": "Enter your Email",
-    "passwordPlaceholder": "Password",
-    "confirmPasswordPlaceholder": "Confirm password",
-    "resetButton": "Reset password",
-    "errorPasswordMismatch": "Password do not match the confirm password",
-    "serverError": "Server error",
-    "noServerResponse": "No response from server. Is the backend running?",
-    "requestSetupError": "Request setup error: "
-  },
+  "resetPasswordTitle": "Reset account password",
+  "enterNewPasswordSubtext": "Enter a new password for your account",
+  "emailPlaceholder": "Enter your Email",
+  "passwordPlaceholder": "Password",
+  "confirmPasswordPlaceholder": "Confirm password",
+  "resetButton": "Reset password",
+  "errorPasswordMismatch": "Password does not match the confirm password",
+  "serverError": "Server error",
+  "noServerResponse": "No response from server. Is the backend running?",
+  "requestSetupError": "Request setup error: ",
+  "resetSuccess": "Password reset successfully",
+  "copyAndSaveInstruction": "Please copy and save this password securely.",
+  "yourNewPassword": "Your new password:"
+},
   "topBar": {
     "passwordResetTitle": "Password Reset"
   },
@@ -62,6 +65,7 @@
     "signUpButton": "Sign Up",
     "alreadyAccount": "Already have an account?",
     "loginLink": "Log In"
+    "phonePlaceholder": "Enter your phone number"
   },
   "message": {
     "welcomeTitle": "Welcome to Message page"
@@ -92,6 +96,8 @@
     "location": "Location",
     "website": "Website",
     "tweets": "Tweets"
+    "tweet": "Tweet",
+    "useAvatar": "Use Avatar"
   },
   "post": {
     "comment": "Comment",
@@ -129,4 +135,5 @@
   "here could be a Network Error": "here could be a Network Error",
   "svgError": "svgError",
   "Something is Wrong": "Something is Wrong"
+  
 }
