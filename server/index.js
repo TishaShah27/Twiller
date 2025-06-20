@@ -35,35 +35,91 @@ async function run() {
     const usercollection = client.db("database").collection("users");
     const otpStore = new Map();
 
+     app.post("/login", async (req, res) => {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res
+          .status(400)
+          .send({ error: "Email and password are required" });
+      }
+
+      try { 
+        const user = await usercollection.findOne({ email });
+
+        if (!user) {
+          return res.status(404).send({ error: "User not found" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return res.status(401).send({ error: "Invalid password" });
+        }
+
+        res.send({ message: "Login successful",
+          user: {
+    email: user.email,
+    name: user.name,
+    username: user.username,
+    phone: user.phone,
+  },
+        });
+      } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).send({ error: "Internal server error" });
+      }
+    });
+
+
     // Your route handlers go here (copy from your existing code)
     app.post("/register", async (req, res) => {
-  const { username, name, email, phone } = req.body;
+      const { username, name, email, phone, password } = req.body;
 
-  if (!email || !username || !name) {
-    return res.status(400).send({ error: "Required fields are missing" });
-  }
+      // Basic validation
+      if (!email || !username || !name || !password) {
+        return res.status(400).send({ error: "Required fields are missing" });
+      }
 
-  try {
-    // Check for existing email
-    const existingEmail = await usercollection.findOne({ email });
-    if (existingEmail) {
-      return res.status(409).send({ error: "Email already exists" });
-    }
+      try {
+        // Check if email already exists
+        const existingEmail = await usercollection.findOne({ email });
+        if (existingEmail) {
+          return res.status(409).send({ error: "Email already exists" });
+        }
 
-    // Check for existing username (optional, but recommended)
-    const existingUsername = await usercollection.findOne({ username });
-    if (existingUsername) {
-      return res.status(409).send({ error: "Username already exists" });
-    }
+        // Check if username already exists
+        const existingUsername = await usercollection.findOne({ username });
+        if (existingUsername) {
+          return res.status(409).send({ error: "Username already exists" });
+        }
 
-    // Insert new user
-    const result = await usercollection.insertOne({ username, name, email, phone });
-    res.status(201).send(result);
-  } catch (error) {
-    console.error("Registration error:", error);
-    res.status(500).send({ error: "Internal server error" });
-  }
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Save new user
+        const result = await usercollection.insertOne({
+          username,
+          name,
+          email,
+          phone,
+          password: hashedPassword,
+        });
+
+        res.status(201).send({
+  message: "User registered successfully",
+  user: {
+    username,
+    name,
+    email,
+    phone,
+  },
 });
+      } catch (error) {
+        console.error("Registration error:", error);
+        res.status(500).send({ error: "Internal server error" });
+      }
+    });
+
 
 const RECAPTCHA_SECRET = "your-secret-key"; // from reCAPTCHA dashboard
 
@@ -126,7 +182,7 @@ module.exports = router;
     });
 
     app.patch("/userupdate/:email", async (req, res) => {
-      const filter = req.params;
+      const filter = { email:req.query.email };
       const profile = req.body;
       const options = { upsert: true };
       const updateDoc = { $set: profile };
@@ -219,56 +275,53 @@ const transporter = nodemailer.createTransport({
 });
 
   app.post("/forgot-password", async (req, res) => {
-      try {
-        const { emailOrPhone } = req.body;
+  try {
+    const { emailOrPhone } = req.body;
 
-        if (!emailOrPhone) {
-          return res.status(400).send({ error: "Email or phone is required" });
-        }
-        const user = await usercollection.findOne({
-          $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
-        });
-        if (!user) {
-          return res.status(404).send({ error: "User not found" });
-        }
-        const today = new Date().toISOString().slice(0, 10);
-        if (user.lastPasswordReset === today) {
-          return res.status(429).send({
-            error: "Password reset already requested today. Try again tomorrow.",
-          });
-        }
-        const newPassword = generateRandomPassword(10);
+    if (!emailOrPhone) {
+      return res.status(400).send({ error: "Email or phone is required" });
+    }
 
-        await usercollection.updateOne(
-          { _id: user._id },
-          { $set: { password: newPassword, lastPasswordReset: today } }
-        );
-
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-          },
-        });
-
-        const mailOptions = {
-          from: `"Twiller Support" <${process.env.EMAIL_USER}>`,
-          to: user.email,
-          subject: "Your Twiller Password Reset",
-          text: `Hello,\n\nYour new password is: ${newPassword}\n\nPlease log in using this password and change it after logging in.\n\n- Twiller Team`,
-        };
-
-        await transporter.sendMail(mailOptions);
-
-        console.log("New password emailed to:", user.email);
-
-        res.send({ message: "Password reset successful. Check your email." });
-      } catch (error) {
-        console.error("Error in forgot-password:", error);
-        res.status(500).send({ error: "Internal server error" });
-      }
+    const user = await usercollection.findOne({
+      $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
     });
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    // Only allow one reset per day
+    if (user.lastPasswordReset === today) {
+      return res.status(429).send({
+        error: "Password reset already requested today. Try again tomorrow.",
+      });
+    }
+
+    // ✅ Generate new random password (A-Z, a-z only)
+    const newPassword = generateRandomPassword(10); // Custom function below
+
+    // Hash and save to DB
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await usercollection.updateOne(
+      { _id: user._id },
+      { $set: { password: hashedPassword, lastPasswordReset: today } }
+    );
+
+    // ❌ (optional) Remove email sending:
+    // await transporter.sendMail(...)
+
+    // ✅ Send password back to frontend
+    return res.send({
+      message: "Password reset successful. Please use the new password below.",
+      newPassword, // Send directly to frontend
+    });
+  } catch (error) {
+    console.error("Error in forgot-password:", error);
+    res.status(500).send({ error: "Internal server error" });
+  }
+});
 
     // save avatar 
     app.post('/save-avatar', async (req, res) => {
