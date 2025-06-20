@@ -22,17 +22,20 @@
     "button": "发推"
   },
   "forgotPassword": {
-    "resetPasswordTitle": "重置账户密码",
-    "enterNewPasswordSubtext": "为您的账户输入新密码",
-    "emailPlaceholder": "输入您的邮箱",
-    "passwordPlaceholder": "密码",
-    "confirmPasswordPlaceholder": "确认密码",
-    "resetButton": "重置密码",
-    "errorPasswordMismatch": "密码与确认密码不匹配",
-    "serverError": "服务器错误",
-    "noServerResponse": "服务器无响应。后端是否在运行？",
-    "requestSetupError": "请求设置错误："
-  },
+  "resetPasswordTitle": "重置账户密码",
+  "enterNewPasswordSubtext": "请输入您的新密码",
+  "emailPlaceholder": "请输入您的邮箱",
+  "passwordPlaceholder": "密码",
+  "confirmPasswordPlaceholder": "确认密码",
+  "resetButton": "重置密码",
+  "errorPasswordMismatch": "密码与确认密码不一致",
+  "serverError": "服务器错误",
+  "noServerResponse": "服务器无响应。后端是否正在运行？",
+  "requestSetupError": "请求设置错误：",
+  "resetSuccess": "密码重置成功",
+  "copyAndSaveInstruction": "请复制并妥善保存该密码。",
+  "yourNewPassword": "您的新密码："
+},
   "topBar": {
     "passwordResetTitle": "密码重置"
   },
@@ -88,7 +91,9 @@
   "mainprofile": {
     "location": "位置",
     "website": "网站",
-    "tweets": "推文"
+    "tweets": "推文",
+    "tweet": "推文",
+     "useAvatar": "使用头像"
   },
   "sidebar": {
     "home": "主页",
