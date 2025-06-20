@@ -58,7 +58,8 @@
     "passwordPlaceholder": "Mot de passe",
     "signUpButton": "S'inscrire",
     "alreadyAccount": "Vous avez déjà un compte ?",
-    "Don't have an account?": "Vous n'avez pas de compte ?"
+    "Don't have an account?": "Vous n'avez pas de compte ?",
+    "phonePlaceholder": "Entrez votre numéro de téléphone"
   },
   "lists": {
     "welcomeTitle": "Bienvenue sur la page des listes"
