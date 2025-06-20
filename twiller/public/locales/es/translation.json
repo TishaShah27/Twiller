@@ -24,17 +24,20 @@
     "button": "Twittear"
   },
   "forgotPassword": {
-    "resetPasswordTitle": "Restablecer la contraseña de la cuenta",
-    "enterNewPasswordSubtext": "Ingrese una nueva contraseña para su cuenta",
-    "emailPlaceholder": "Ingrese su correo electrónico",
-    "passwordPlaceholder": "Contraseña",
-    "confirmPasswordPlaceholder": "Confirmar contraseña",
-    "resetButton": "Restablecer contraseña",
-    "errorPasswordMismatch": "La contraseña no coincide con la confirmación",
-    "serverError": "Error del servidor",
-    "noServerResponse": "No hay respuesta del servidor. ¿Está el backend en funcionamiento?",
-    "requestSetupError": "Error en la configuración de la solicitud: "
-  },
+  "resetPasswordTitle": "Restablecer la contraseña de la cuenta",
+  "enterNewPasswordSubtext": "Ingrese una nueva contraseña para su cuenta",
+  "emailPlaceholder": "Ingrese su correo electrónico",
+  "passwordPlaceholder": "Contraseña",
+  "confirmPasswordPlaceholder": "Confirmar contraseña",
+  "resetButton": "Restablecer contraseña",
+  "errorPasswordMismatch": "La contraseña no coincide con la confirmación",
+  "serverError": "Error del servidor",
+  "noServerResponse": "Sin respuesta del servidor. ¿Está funcionando el backend?",
+  "requestSetupError": "Error al configurar la solicitud: ",
+  "resetSuccess": "Contraseña restablecida con éxito",
+  "copyAndSaveInstruction": "Por favor, copie y guarde esta contraseña de forma segura.",
+  "yourNewPassword": "Su nueva contraseña:"
+},
   "topBar": {
     "passwordResetTitle": "Restablecer contraseña"
   },
@@ -47,7 +50,8 @@
     "passwordPlaceholder": "Contraseña",
     "signUpButton": "Registrarse",
     "alreadyAccount": "¿Ya tienes una cuenta?",
-    "loginLink": "Iniciar sesión"
+    "loginLink": "Iniciar sesión",
+    "phonePlaceholder": "Introduce tu número de teléfono"
   },
   "lists": {
     "welcomeTitle": "Bienvenido a la página de listas"
@@ -80,7 +84,9 @@
   "mainprofile": {
     "location": "Ubicación",
     "website": "Sitio web",
-    "tweets": "Tweets"
+    "tweets": "Tweets",
+    "tweet": "Tuitear",
+    "useAvatar": "Usar avatar"
   },
   "sidebar": {
     "home": "Inicio",
