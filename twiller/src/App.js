@@ -29,15 +29,16 @@ function App() {
           <LanguageSwitcher />
         </div>
         <Routes>
+          
           <Route
-            path="/" element={
-              <ProtectedRoute>{" "}
+            path="/"
+            element={
+              <ProtectedRoute>
                 <Home />
-              </ProtectedRoute>}
+              </ProtectedRoute>
+            }
           >
             <Route index element={<Feed />} />
-          </Route>
-          <Route path="/home" element={<Home />}>
             <Route path="feed" element={<Feed />} />
             <Route path="explore" element={<Explore />} />
             <Route path="notification" element={<Notification />} />
@@ -47,9 +48,11 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="more" element={<More />} />
           </Route>
+
+          {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="forgot-password" element={<ForgotPassword />} /> 
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
         
   
