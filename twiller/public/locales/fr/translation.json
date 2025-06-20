@@ -32,17 +32,20 @@
     "button": "Tweeter"
   },
   "forgotPassword": {
-    "resetPasswordTitle": "Réinitialiser le mot de passe du compte",
-    "enterNewPasswordSubtext": "Entrez un nouveau mot de passe pour votre compte",
-    "emailPlaceholder": "Entrez votre e-mail",
-    "passwordPlaceholder": "Mot de passe",
-    "confirmPasswordPlaceholder": "Confirmer le mot de passe",
-    "resetButton": "Réinitialiser le mot de passe",
-    "errorPasswordMismatch": "Le mot de passe ne correspond pas à la confirmation",
-    "serverError": "Erreur serveur",
-    "noServerResponse": "Pas de réponse du serveur. Le backend fonctionne-t-il ?",
-    "requestSetupError": "Erreur de configuration de la requête : "
-  },
+  "resetPasswordTitle": "Réinitialiser le mot de passe du compte",
+  "enterNewPasswordSubtext": "Entrez un nouveau mot de passe pour votre compte",
+  "emailPlaceholder": "Entrez votre email",
+  "passwordPlaceholder": "Mot de passe",
+  "confirmPasswordPlaceholder": "Confirmer le mot de passe",
+  "resetButton": "Réinitialiser le mot de passe",
+  "errorPasswordMismatch": "Le mot de passe ne correspond pas à la confirmation",
+  "serverError": "Erreur du serveur",
+  "noServerResponse": "Aucune réponse du serveur. Le backend fonctionne-t-il ?",
+  "requestSetupError": "Erreur de configuration de la requête : ",
+  "resetSuccess": "Mot de passe réinitialisé avec succès",
+  "copyAndSaveInstruction": "Veuillez copier et enregistrer ce mot de passe en toute sécurité.",
+  "yourNewPassword": "Votre nouveau mot de passe :"
+},
   "topBar": {
     "passwordResetTitle": "Réinitialisation du mot de passe"
   },
@@ -88,7 +91,9 @@
   "mainprofile": {
     "location": "Emplacement",
     "website": "Site web",
-    "tweets": "Tweets"
+    "tweets": "Tweets",
+    "tweet": "Tweeter",
+    "useAvatar": "Utiliser un avatar"
   },
   "sidebar": {
     "home": "Accueil",
