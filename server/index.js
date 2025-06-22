@@ -183,13 +183,18 @@ module.exports = router;
     });
 
     app.patch("/userupdate/:email", async (req, res) => {
-      const filter = { email:req.query.email };
+      const filter = { email:req.params.email };
       const profile = req.body;
       const options = { upsert: true };
       const updateDoc = { $set: profile };
       console.log(profile);
+      try{
       const result = await usercollection.updateOne(filter, updateDoc, options);
       res.send(result);
+      } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).send({ error: "Update failed" });
+      }
     });
 
 
